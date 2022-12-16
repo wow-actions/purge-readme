@@ -11,14 +11,11 @@ inputs:
   GITHUB_TOKEN:
     description: Your GitHub token for authentication
     required: true
-  owner:
-    description: The github user/org name
-    required: false
   repo:
     description: The repository name
     required: false
   branch:
-    description: The branch to refresh
+    description: The branch to purge
     required: false
   paths:
     description: The markdown file paths to purge

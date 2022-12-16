@@ -28,8 +28,10 @@ export async function run() {
   try {
     const { context } = github
     const inputs = parseInputs({
-      owner: { type: 'string', defaultValue: context.repo.owner },
-      repo: { type: 'string', defaultValue: context.repo.repo },
+      repo: {
+        type: 'string',
+        defaultValue: `${context.repo.owner}/${context.repo.repo}`,
+      },
       branch: {
         type: 'string',
         defaultValue: context.ref.split('/').slice(2).join('/'),
@@ -38,8 +40,8 @@ export async function run() {
     })
 
     core.debug(`inputs: ${JSON.stringify(inputs, null, 2)}`)
-    const { owner, repo, branch, paths } = inputs
-    if (owner && repo && branch && paths) {
+    const { repo, branch, paths } = inputs
+    if (repo && branch && paths) {
       for (let i = 0; i < paths.length; i++) {
         const file = paths[i]
         const url = `https://github.com/${repo}/blob/${branch}/${file}`

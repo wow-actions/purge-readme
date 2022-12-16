@@ -12,6 +12,42 @@
   <strong>Clear the cache of images embeded in GitHub README or markdown files</strong>
 </p>
 
+## Usage
+
+Create a `.github/workflows/purge-readme.yml` file in the repository you want to install this action:
+
+```yml
+name: Purge README
+on: push
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: wow-actions/purge-readme@v1
+```
+
+### Inputs
+
+Various inputs are defined to let you configure the action:
+
+> Note: [Workflow command and parameter names are not case-sensitive](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-commands-for-github-actions#about-workflow-commands).
+
+| Name | Description | Default |
+| --- | --- | --- |
+| `repo` | The repo with `[owner]/[repo]` format. | The repo of the action running on |
+| `branch` | The branch to purge. | The branch of the action running on |
+| `paths` | The markdown file paths to purge. | `README.md` |
+
+```yml
+- uses: wow-actions/purge-readme@v1
+  with:
+    repo: wow-actions/purge-readme
+    branch: master
+    paths: |
+      README.md
+      images.md
+```
+
 ## License
 
 The application code and associated documentation is under the [MIT License](LICENSE)
