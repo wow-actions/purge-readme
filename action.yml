@@ -1,0 +1,26 @@
+name: Purge README
+description: Clear the cache of images embeded in GitHub README or markdown files
+author: bubkoo <bubkoo.wy@gmail.com>
+runs:
+  using: node16
+  main: dist/index.js
+branding:
+  icon: file-text
+  color: orange
+inputs:
+  GITHUB_TOKEN:
+    description: Your GitHub token for authentication
+    required: true
+  owner:
+    description: The github user/org name
+    required: false
+  repo:
+    description: The repository name
+    required: false
+  branch:
+    description: The branch to refresh
+    required: false
+  paths:
+    description: The markdown file paths to purge
+    required: false
+    default: README.md

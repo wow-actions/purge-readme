@@ -1,0 +1,24 @@
+name: Purge README
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: hmarr/debug-action@v2
+      - uses: actions/checkout@v3
+      - name: 🚧　Install
+        run: |
+          yarn install
+      - name: 📦　Build
+        run: |
+          yarn build
+      - name: 🔑　Generate Token
+        uses: wow-actions/use-app-token@v2
+        with:
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.PRIVATE_KEY }}
+      - uses: ./
+        with:
+          paths: |
+            README.md
+            images.md
