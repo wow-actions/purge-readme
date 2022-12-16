@@ -7,6 +7,7 @@ import figures from 'figures'
 import parseInputs from '@wow-actions/parse-inputs'
 
 async function purge(url: string) {
+  core.info(`purging: ${url}`)
   const html = await fetch(url).then((res) => res.text())
   const content = load(html)
   const images = content('img[data-canonical-src]')
@@ -43,12 +44,8 @@ export async function run() {
     const { repo, branch, paths } = inputs
     if (repo && branch && paths) {
       for (let i = 0; i < paths.length; i++) {
-        const file = paths[i]
-        const url = `https://github.com/${repo}/blob/${branch}/${file}`
-        core.info(`purging: ${file}`)
         // eslint-disable-next-line no-await-in-loop
-        await purge(url)
-        core.info('')
+        await purge(`https://github.com/${repo}/blob/${branch}/${paths[i]}`)
       }
     }
   } catch (e) {
