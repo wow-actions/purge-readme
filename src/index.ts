@@ -6,24 +6,22 @@ import chalk from 'chalk'
 import figures from 'figures'
 import parseInputs from '@wow-actions/parse-inputs'
 
-async function purge(url: string, file: string) {
-  core.info(`purging: ${file}`)
+async function purge(url: string) {
   const html = await fetch(url).then((res) => res.text())
   const content = load(html)
-  const arr = content('img[data-canonical-src]').map(async (i, elem) => {
-    const cacheURL = elem.attribs.src
-    const rawURL = elem.attribs['data-canonical-src']
+  const images = content('img[data-canonical-src]')
+  for (let i = 0; i < images.length; i++) {
+    const img = images[i]
+    const cacheURL = img.attribs.src
+    const rawURL = img.attribs['data-canonical-src']
+    // eslint-disable-next-line no-await-in-loop
     const res = await fetch(cacheURL, { method: 'PURGE' })
     if (res.ok) {
       core.info(`${chalk.green(figures.tick)} ${rawURL}`)
     } else {
       core.info(`${chalk.red(figures.cross)} ${rawURL}`)
     }
-
-    return res
-  })
-
-  return Promise.all(arr)
+  }
 }
 
 export async function run() {
@@ -42,12 +40,14 @@ export async function run() {
     core.debug(`inputs: ${JSON.stringify(inputs, null, 2)}`)
     const { owner, repo, branch, paths } = inputs
     if (owner && repo && branch && paths) {
-      return Promise.all(
-        paths.map(async (file) => {
-          const url = `https://github.com/${repo}/blob/${branch}/${file}`
-          return purge(url, file)
-        }),
-      )
+      for (let i = 0; i < paths.length; i++) {
+        const file = paths[i]
+        const url = `https://github.com/${repo}/blob/${branch}/${file}`
+        core.info(`purging: ${file}`)
+        // eslint-disable-next-line no-await-in-loop
+        await purge(url)
+        core.info()
+      }
     }
   } catch (e) {
     core.error(e)
