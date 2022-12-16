@@ -46,7 +46,7 @@ export async function run() {
         core.info(`purging: ${file}`)
         // eslint-disable-next-line no-await-in-loop
         await purge(url)
-        core.info()
+        core.info('')
       }
     }
   } catch (e) {
