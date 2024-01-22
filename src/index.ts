@@ -16,7 +16,7 @@ async function purge(url: string) {
     const cacheURL = img.attribs.src
     const rawURL = img.attribs['data-canonical-src']
     if (!rawURL) {
-      continue;
+      continue
     }
     // eslint-disable-next-line no-await-in-loop
     const res = await fetch(cacheURL, { method: 'PURGE' })
